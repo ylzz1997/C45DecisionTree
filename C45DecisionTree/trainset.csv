@@ -1,0 +1,10 @@
+ID,Outlook,Temperature,Wind,PlayTennis
+1,Overcast,Mild,TRUE,Yes
+2,Overcast,Hot,FALSE,Yes
+3,Overcast,Hot,FALSE,Yes
+4,Rain,Mild,FALSE,Yes
+5,Rain,Cool,FALSE,Yes
+6,Rain,Cool,TRUE,No
+7,Overcast,Cool,TRUE,Yes
+8,Rain,Mild,TRUE,No
+9,Rain,Mild,FALSE,Yes
