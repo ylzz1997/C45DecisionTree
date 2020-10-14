@@ -3,15 +3,17 @@
 #include "DecisionTreeNode.h"
 class DateTable
 {
-public:
+private:
 	vector<Item>& itemLable;
 	vector<vector<string>>& trainSet;
 	vector<bool> itemvisit;
 	vector<bool> linevisit;
 	int finalNum;
-	DateTable(vector<Item>& itemLable,vector<vector<string>>& trainSet,vector<bool> itemvisit,vector<bool> linevisit,int finalNum,DecisionTreeNode* now);
+	DecisionTreeNode*& now;
+	double InfoNum(vector<int> a,int sum);
+public:
+	DateTable(vector<Item>& itemLable,vector<vector<string>>& trainSet,vector<bool> itemvisit,vector<bool> linevisit,int finalNum,DecisionTreeNode*& now);
 	~DateTable(void);
-	DecisionTreeNode* now;
 	void desicisonTreeTrain();
 };
 
