@@ -11,3 +11,8 @@ DateTable::DateTable(vector<Item>& itemLable,vector<vector<string>>& trainSet,ve
 DateTable::~DateTable(void)
 {
 }
+
+void DateTable::desicisonTreeTrain()
+{
+
+}
