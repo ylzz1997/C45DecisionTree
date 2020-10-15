@@ -2,15 +2,23 @@
 #include "DateTable.h"
 
 
-double DateTable::InfoNum(vector<int> a, int sum)
+double DateTable::InfoNum(unordered_map<string, double>& a, int sum)
 {
-
-	return 0.0;
+	unordered_map<string, double>::iterator it = a.begin();
+	double rtn = 0;
+	while (it != a.end()) {
+		it->second = it->second / (double)sum;
+		
+		//cout << it->first << ":" << it->second << endl;  //²âÊÔÓï¶Î
+		it++;
+	}
+	return 
 }
 
-DateTable::DateTable(vector<Item>& itemLable,vector<vector<string>>& trainSet,vector<bool> itemvisit,vector<bool> linevisit,int finalNum,DecisionTreeNode*& now):itemLable(itemLable),trainSet(trainSet),itemvisit(itemvisit),linevisit(linevisit),finalNum(finalNum),now(now)
+DateTable::DateTable(vector<Item>& itemLable,vector<vector<string>>& trainSet,vector<bool> itemvisit,vector<bool> linevisit,int finalNum,DecisionTreeNode*& now,unordered_map<string, int>& itemNameTokey):itemLable(itemLable),trainSet(trainSet),itemvisit(itemvisit),linevisit(linevisit),finalNum(finalNum),now(now),itemNameTokey(itemNameTokey)
 {
-	
+	//cout << this->linevisit.size() << endl;
+	//cout << trainSet.size() << endl;
 }
 
 
@@ -20,14 +28,21 @@ DateTable::~DateTable(void)
 
 void DateTable::desicisonTreeTrain()
 {
-	unordered_map<string, int> count;
+	unordered_map<string, double> finalCount;
 	int sumCount = 0;
+	//cout << this->linevisit.size() << endl;
 	for (int i = 0; i < trainSet.size(); i++) {
 		if (linevisit[i]) {
-			//if(count[trainSet[i])
+			if (finalCount.count(trainSet[i][finalNum])) {
+				finalCount[trainSet[i][finalNum]]++;
+			}
+			else {
+				finalCount[trainSet[i][finalNum]] = 1.0;
+			}
 			sumCount++;
 		}
 	}
+	InfoNum(finalCount, sumCount);
 }
 
 

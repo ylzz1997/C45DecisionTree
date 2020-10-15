@@ -13,6 +13,7 @@ TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trai
 		bool rec = (continuous>>(trainSet[0].size()-i-1))&1;
 		Item a(trainSet[0][i],rec);
 		itemLable.push_back(a);
+		itemNameTokey[trainSet[0][i]] = i;
 	}
 	finalNum = config["FinalClass"];
 	if(finalNum>=0){
@@ -37,13 +38,16 @@ TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trai
 		}
 	}
 	//cout << "item:" << itemvisit.size() << " line:" << linevisit.size()<< endl;
-	DateTable datetable(itemLable,trainSet,itemvisit,linevisit,finalNum,desicsionTree.head);
-	this->datetable = &datetable;
+
+	//cout << linevisit.size() << endl;
+	DateTable datetable(itemLable,trainSet,itemvisit,linevisit,finalNum,desicsionTree.head,itemNameTokey);
+	this->datetable = new DateTable(itemLable, trainSet, itemvisit, linevisit, finalNum, desicsionTree.head, itemNameTokey);
+
 }
 
 
 void TrainSet::start(){
-
+	datetable->desicisonTreeTrain();
 }
 
 DecisionTree TrainSet::getDecisionTree(){
@@ -52,4 +56,5 @@ DecisionTree TrainSet::getDecisionTree(){
 
 TrainSet::~TrainSet(void)
 {
+	delete(this->datetable);
 }

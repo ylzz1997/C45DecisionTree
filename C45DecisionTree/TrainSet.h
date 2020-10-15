@@ -8,7 +8,8 @@ using namespace std;
 class TrainSet
 {
 private:
-	unordered_map<string, int>& config;
+	unordered_map<string, int>& config; 
+	unordered_map<string,int> itemNameTokey;
 	vector<vector<string>>& trainSet;
 	vector<Item> itemLable;
 	DateTable* datetable;

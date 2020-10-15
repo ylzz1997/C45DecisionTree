@@ -26,6 +26,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	fileUtil.readConfig(config);
 	//cout<<config["Continuous"]<<endl;
 	TrainSet ts(trainSetTemp,config);
+	ts.start();
 	getchar();
 	return 0;
 }
