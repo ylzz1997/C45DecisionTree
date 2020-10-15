@@ -8,11 +8,11 @@ double DateTable::InfoNum(unordered_map<string, double>& a, int sum)
 	double rtn = 0;
 	while (it != a.end()) {
 		it->second = it->second / (double)sum;
-		
+		rtn -= (it->second) * (log(it->second) / log(2));
 		//cout << it->first << ":" << it->second << endl;  //²âÊÔÓï¶Î
 		it++;
 	}
-	return 
+	return rtn;
 }
 
 DateTable::DateTable(vector<Item>& itemLable,vector<vector<string>>& trainSet,vector<bool> itemvisit,vector<bool> linevisit,int finalNum,DecisionTreeNode*& now,unordered_map<string, int>& itemNameTokey):itemLable(itemLable),trainSet(trainSet),itemvisit(itemvisit),linevisit(linevisit),finalNum(finalNum),now(now),itemNameTokey(itemNameTokey)
@@ -42,7 +42,7 @@ void DateTable::desicisonTreeTrain()
 			sumCount++;
 		}
 	}
-	InfoNum(finalCount, sumCount);
+	cout << InfoNum(finalCount, sumCount) << endl;
 }
 
 
