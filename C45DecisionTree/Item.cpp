@@ -9,7 +9,6 @@ Item::Item(string name,bool isContinuous,bool isFinalClass)
 	this->isContinuous = isContinuous;
 }
 
-
 Item::~Item(void)
 {
 }

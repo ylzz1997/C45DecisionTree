@@ -15,6 +15,22 @@ double DateTable::InfoNum(unordered_map<string, double>& a, int sum)
 	return rtn;
 }
 
+double DateTable::InfoNum(unordered_map<string, double>& a, int sum, unordered_map<string, vector<pair<string, string>>>& pure,string first,string second)
+{
+	unordered_map<string, double>::iterator it = a.begin();
+	double rtn = 0;
+	while (it != a.end()) {
+		pair<string, string> temp(second,it->first);
+		it->second = it->second / (double)sum;
+		if ((char)it->second) {
+			pure[first].push_back(temp);
+		}
+		rtn -= (it->second) * (log(it->second) / log(2));
+		//cout << it->first << ":" << it->second << endl;  //²âÊÔÓï¶Î
+		it++;
+	}
+	return rtn;
+}
 
 double DateTable::InfoNum(unordered_map<string, ItemCount>::iterator& it, int sum)
 {
@@ -55,6 +71,8 @@ void DateTable::desicisonTreeTrain()
 	double infoF = InfoNum(*finalCount, sumCount);
 	delete(finalCount);
 	unordered_map<string, double> H;
+	unordered_map<string,vector<pair<string,string>>> pure;
+	unordered_map<string, vector<string>> value;
 	for (int i = 0; i < itemLable.size(); i++) {
 		if (i == finalNum) continue;
 		H[itemLable[i].name] = 0.0;
@@ -78,7 +96,8 @@ void DateTable::desicisonTreeTrain()
 			unordered_map<string, ItemCount>::iterator it = ict.begin();
 			//cout << itemLable[i].name << endl;  //²âÊÔÓï¶Î
 			while (it != ict.end()) {
-				it->second.info = InfoNum(it->second.count, it->second.sum);
+				value[itemLable[i].name].push_back(it->first);
+				it->second.info = InfoNum(it->second.count, it->second.sum,pure,itemLable[i].name,it->first);
 				H[itemLable[i].name] += ((double)it->second.sum / (double)sumCount) * it->second.info;
 				infonum += InfoNum(it, sumCount);
 				//cout <<"  "<< it->first << ":" << it->second.sum << endl;  //²âÊÔÓï¶Î
@@ -93,13 +112,27 @@ void DateTable::desicisonTreeTrain()
 			H[itemLable[i].name] = (infoF - H[itemLable[i].name])/ infonum;
 		}
 	}
-
 	unordered_map<string, double>::iterator it =  H.begin();
-	unordered_map<string, double>::iterator& max = it;
+	unordered_map<string, double>::iterator max = it;
 	while (it != H.end()) {
-		
+		max = it->second > max->second ? it : max;
 		it++;
 	}
+	cout << max->first<< ":"<<max->second << endl;  //²âÊÔ×Ö¶Î
+	now = new DecisionTreeNode(&itemLable[itemNameTokey[max->first]]);
+	vector<bool> aitemvisit = itemvisit;
+	aitemvisit[itemNameTokey[max->first]]=false;
+	for (vector<pair<string,string>>::iterator it = pure[max->first].begin(); it!= pure[max->first].end(); it++) {
+		now->child[it->first] = new DecisionTreeNode(&itemLable[finalNum]);
+		now->child[it->first]->reason = it->second;
+	}
+	for (vector<string>::iterator it = value[max->first].begin(); it != value[max->first].end(); it++) {
+		if (!now->child.count(*it)) {
+			vector<bool> alinevisit = linevisit;
+			
+		}
+	}
+
 }
 
 

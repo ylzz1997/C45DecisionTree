@@ -1,11 +1,9 @@
 #include "StdAfx.h"
 #include "DecisionTreeNode.h"
 
-
-DecisionTreeNode::DecisionTreeNode(void)
+DecisionTreeNode::DecisionTreeNode(Item* item)
 {
 }
-
 
 DecisionTreeNode::~DecisionTreeNode(void)
 {

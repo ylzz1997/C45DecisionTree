@@ -6,6 +6,7 @@
 #pragma once
 
 #include "targetver.h"
+#include <utility>
 #include <stdio.h> 
 #include <tchar.h>
 #include <cmath>
@@ -16,6 +17,7 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <algorithm> 
 
 // TODO: 在此处引用程序需要的其他头文件

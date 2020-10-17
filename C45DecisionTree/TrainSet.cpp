@@ -29,6 +29,9 @@ TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trai
 	vector<bool> itemvisit,linevisit;
 	trainSet.erase(trainSet.begin());
 	int max = itemLable.size()>trainSet.size()?itemLable.size():trainSet.size();
+
+
+
 	for(int i = 0;i<max;i++){
 		if(i<itemLable.size()){
 			itemvisit.push_back(true);
@@ -44,7 +47,6 @@ TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trai
 	//this->datetable = &datetable;          ´íÎóÐ´·¨
 	
 	this->datetable = new DateTable(itemLable, trainSet, itemvisit, linevisit, finalNum, desicsionTree.head, itemNameTokey);
-
 }
 
 
