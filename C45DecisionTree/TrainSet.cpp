@@ -38,9 +38,11 @@ TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trai
 		}
 	}
 	//cout << "item:" << itemvisit.size() << " line:" << linevisit.size()<< endl;
-
 	//cout << linevisit.size() << endl;
-	DateTable datetable(itemLable,trainSet,itemvisit,linevisit,finalNum,desicsionTree.head,itemNameTokey);
+	
+	//DateTable datetable(itemLable,trainSet,itemvisit,linevisit,finalNum,desicsionTree.head,itemNameTokey);
+	//this->datetable = &datetable;          ´íÎóÐ´·¨
+	
 	this->datetable = new DateTable(itemLable, trainSet, itemvisit, linevisit, finalNum, desicsionTree.head, itemNameTokey);
 
 }
