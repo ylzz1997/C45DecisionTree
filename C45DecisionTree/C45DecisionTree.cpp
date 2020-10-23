@@ -12,8 +12,8 @@ static unordered_map<string, int> config;
 int _tmain(int argc, _TCHAR* argv[])
 {
 	initial();
-	vector<vector<string>> trainSetTemp;
-	if(!fileUtil.readFileToVector(trainSetTemp)){
+	vector<vector<string>>* trainSetTemp =new vector<vector<string>>;
+	if(!fileUtil.readFileToVector(*trainSetTemp)){
         cout << "打开文件失败！" << endl;
 		getchar();
 		return 1;
@@ -25,8 +25,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	}*/
 	fileUtil.readConfig(config);
 	//cout<<config["Continuous"]<<endl;
-	TrainSet ts(trainSetTemp,config);
-	ts.start();
+	TrainSet* ts = new TrainSet(*trainSetTemp,config);
+	ts->start();
+	delete(ts);
+	delete(trainSetTemp);
 	getchar();
 	return 0;
 }
