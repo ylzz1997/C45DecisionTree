@@ -8,15 +8,15 @@ TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trai
 	for(int i=0;i<trainSet[0].size();i++){
 		int continuous = config["Continuous"];
 		bool rec = (continuous>>(trainSet[0].size()-i-1))&1;
-		Item a(trainSet[0][i],rec);
+		Item* a = new Item(trainSet[0][i],rec);
 		itemLable.push_back(a);
 		itemNameTokey[trainSet[0][i]] = i;
 	}
 	finalNum = config["FinalClass"];
 	if(finalNum>=0){
-		itemLable[finalNum].isFinalClass=true;
+		itemLable[finalNum]->isFinalClass=true;
 	}else{
-		itemLable[itemLable.size()+finalNum].isFinalClass=true;
+		itemLable[itemLable.size()+finalNum]->isFinalClass=true;
 		finalNum = itemLable.size() + finalNum;
 	}
 	vector<bool> itemvisit,linevisit;
@@ -39,7 +39,6 @@ TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trai
 
 void TrainSet::start(){
 	datetable->desicisonTreeTrain();
-	cout << "ÑµÁ·½áÊø" << endl;
 }
 
 DecisionTree TrainSet::getDecisionTree(){

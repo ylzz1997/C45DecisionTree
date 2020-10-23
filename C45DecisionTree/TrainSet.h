@@ -11,7 +11,7 @@ private:
 	unordered_map<string, int>& config; 
 	unordered_map<string,int> itemNameTokey;
 	vector<vector<string>>& trainSet;
-	vector<Item> itemLable;
+	vector<Item*> itemLable;
 	DateTable* datetable;
 	int finalNum;
 	DecisionTree desicsionTree;

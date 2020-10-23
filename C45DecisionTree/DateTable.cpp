@@ -68,10 +68,8 @@ double DateTable::InfoNum(ItemCount& it, int sum)
 	return rtn;
 }
 
-DateTable::DateTable(vector<Item>& itemLable,vector<vector<string>>& trainSet,vector<bool> itemvisit,vector<bool> linevisit,int finalNum,DecisionTreeNode*& now,unordered_map<string, int>& itemNameTokey):itemLable(itemLable),trainSet(trainSet),itemvisit(itemvisit),linevisit(linevisit),finalNum(finalNum),now(now),itemNameTokey(itemNameTokey)
+DateTable::DateTable(vector<Item*>& itemLable,vector<vector<string>>& trainSet,vector<bool> itemvisit,vector<bool> linevisit,int finalNum,DecisionTreeNode*& now,unordered_map<string, int>& itemNameTokey):itemLable(itemLable),trainSet(trainSet),itemvisit(itemvisit),linevisit(linevisit),finalNum(finalNum),now(now),itemNameTokey(itemNameTokey)
 {
-	//cout << this->linevisit.size() << endl;
-	//cout << trainSet.size() << endl;
 }
 
 
@@ -110,8 +108,8 @@ void DateTable::desicisonTreeTrain()
 	for (int i = 0; i < itemLable.size(); i++) {
 		if (i == finalNum) continue;
 		if (itemvisit[i]) {
-			H[itemLable[i].name] = 0.0;	
-			if (!itemLable[i].isContinuous) {
+			H[itemLable[i]->name] = 0.0;	
+			if (!itemLable[i]->isContinuous) {
 				unordered_map<string, ItemCount> ict;
 				for (int j = 0; j < trainSet.size(); j++) { 
 					if (linevisit[j]) {
@@ -127,12 +125,12 @@ void DateTable::desicisonTreeTrain()
 				double infonum = 0.0;
 				unordered_map<string, ItemCount>::iterator it = ict.begin();
 				while (it != ict.end()) {
-					it->second.info = InfoNum(it->second.count, it->second.sum, pure, itemLable[i].name, it->first);
-					H[itemLable[i].name] += ((double)it->second.sum / (double)sumCount) * it->second.info;
+					it->second.info = InfoNum(it->second.count, it->second.sum, pure, itemLable[i]->name, it->first);
+					H[itemLable[i]->name] += ((double)it->second.sum / (double)sumCount) * it->second.info;
 					infonum += InfoNum(it, sumCount);
 					it++;
 				}
-				H[itemLable[i].name] = (infoF - H[itemLable[i].name]) / infonum;
+				H[itemLable[i]->name] = (infoF - H[itemLable[i]->name]) / infonum;
 			}
 			else {
 				vector<double> continueValue; 
@@ -169,8 +167,8 @@ void DateTable::desicisonTreeTrain()
 							}
 						}
 					}
-					ic[0].info = InfoNum(ic[0].count, ic[0].sum,itemLable[i].name, "<="+to_string(n));
-					ic[1].info = InfoNum(ic[1].count, ic[1].sum,itemLable[i].name, ">"+to_string(n));
+					ic[0].info = InfoNum(ic[0].count, ic[0].sum,itemLable[i]->name, "<="+to_string(n));
+					ic[1].info = InfoNum(ic[1].count, ic[1].sum,itemLable[i]->name, ">"+to_string(n));
 					double Htemp = 0;
 					double infonum = 0.0;
 					for each (ItemCount t in ic)
@@ -189,27 +187,27 @@ void DateTable::desicisonTreeTrain()
 						ictemp[1] = ic[1];
 					}
 				}
-				continueVlitem[itemLable[i].name] = to_string(nowDevide);
-				H[itemLable[i].name] = maxH.second;
+				continueVlitem[itemLable[i]->name] = to_string(nowDevide);
+				H[itemLable[i]->name] = maxH.second;
 				unordered_map<string, double>::iterator it = ictemp[0].count.begin();
 				while (it != ictemp[0].count.end()) {
 					if ((char)it->second) {
-						pair<string,string> temp("<=" + continueVlitem[itemLable[i].name], it->first);
-						pure[itemLable[i].name].push_back(temp);
+						pair<string,string> temp("<=" + continueVlitem[itemLable[i]->name], it->first);
+						pure[itemLable[i]->name].push_back(temp);
 					}
 					it++;
 				}
 				it = ictemp[1].count.begin();
 				while (it != ictemp[1].count.end()) {
 					if ((char)it->second) {
-						pair<string, string> temp(">" + continueVlitem[itemLable[i].name], it->first);
-						pure[itemLable[i].name].push_back(temp);
+						pair<string, string> temp(">" + continueVlitem[itemLable[i]->name], it->first);
+						pure[itemLable[i]->name].push_back(temp);
 					}
 					it++;
 				}
 				//cout <<"nowdivide:" << nowDevide << endl;
 			}
-			pair<string, double>  temp(itemLable[i].name,H[itemLable[i].name]);
+			pair<string, double>  temp(itemLable[i]->name,H[itemLable[i]->name]);
 			max = temp.second > max.second ? temp : max;
 			//cout << itemLable[i].name << " IGR:" << H[itemLable[i].name] << endl;  //测试字段
 		}
@@ -217,17 +215,17 @@ void DateTable::desicisonTreeTrain()
 
 	if (H.size() == 0) return;
 	//cout << max.first<< "(最大值):"<<max.second << endl;  //测试字段
-	now = new DecisionTreeNode(&itemLable[itemNameTokey[max.first]]);
+	now = new DecisionTreeNode(itemLable[itemNameTokey[max.first]]);
 	vector<bool> aitemvisit = itemvisit;
 	aitemvisit[itemNameTokey[max.first]]=false;
 	for (vector<pair<string,string>>::iterator it = pure[max.first].begin(); it!= pure[max.first].end(); it++) {
-		now->child[it->first] = new DecisionTreeNode(&itemLable[finalNum]);
+		now->child[it->first] = new DecisionTreeNode(itemLable[finalNum]);
 		now->child[it->first]->reason = it->second;
 		//cout << it->first << "分类结果为:" << it->second << endl;  //测试字段
 	}
 
 	for (int i = 0; i < trainSet.size(); i++){
-		if (itemLable[itemNameTokey[max.first]].isContinuous) {
+		if (itemLable[itemNameTokey[max.first]]->isContinuous) {
 			double devideItem = atof(continueVlitem[max.first].c_str());
 			if (!now->child.count("<="+continueVlitem[max.first])) {
 				if (!value.count(trainSet[i][itemNameTokey[max.first]])) {

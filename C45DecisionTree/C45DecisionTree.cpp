@@ -12,17 +12,17 @@ static unordered_map<string, int> config;
 int _tmain(int argc, _TCHAR* argv[])
 {
 	initial();
-	vector<vector<string>>* trainSetTemp =new vector<vector<string>>;
-	if(!fileUtil.readFileToVector(*trainSetTemp)){
+	vector<vector<string>> trainSetTemp;
+	if(!fileUtil.readFileToVector(trainSetTemp)){
         cout << "打开文件失败！" << endl;
 		getchar();
 		return 1;
 	}
 	fileUtil.readConfig(config);
-	TrainSet* ts = new TrainSet(*trainSetTemp,config);
-	ts->start();
-	delete(ts);
-	delete(trainSetTemp);
+	TrainSet ts(trainSetTemp, config);
+	ts.start();
+	DecisionTree dt = ts.getDecisionTree();
+ 	dt.printTreeStruct();
 	getchar();
 	return 0;
 }
