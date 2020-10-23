@@ -1,12 +1,13 @@
 #include "StdAfx.h"
 #include "DateTable.h"
-
+using namespace std;
 
 double DateTable::InfoNum(unordered_map<string, double>& a, int sum)
 {
 	unordered_map<string, double>::iterator it = a.begin();
 	double rtn = 0;
 	while (it != a.end()) {
+		if (it->second == 0) { it++; continue; }
 		it->second = it->second / (double)sum;
 		rtn -= (it->second) * (log(it->second) / log(2));
 		//cout << it->first << ":" << it->second << endl;  //²âÊÔÓï¶Î
@@ -20,6 +21,7 @@ double DateTable::InfoNum(unordered_map<string, double>& a, int sum, unordered_m
 	unordered_map<string, double>::iterator it = a.begin();
 	double rtn = 0;
 	while (it != a.end()) {
+		if (it->second == 0) { it++; continue; }
 		pair<string, string> temp(second,it->first);
 		it->second = it->second / (double)sum;
 		if ((char)it->second) {
@@ -31,6 +33,22 @@ double DateTable::InfoNum(unordered_map<string, double>& a, int sum, unordered_m
 	}
 	return rtn;
 }
+
+double DateTable::InfoNum(unordered_map<string, double>& a, int sum,string first, string second)
+{
+	unordered_map<string, double>::iterator it = a.begin();
+	double rtn = 0;
+	while (it != a.end()) {
+		if (it->second == 0) { it++; continue; }
+		pair<string, string> temp(second, it->first);
+		it->second = it->second / (double)sum;
+		rtn -= (it->second) * (log(it->second) / log(2));
+		//cout << it->first << ":" << it->second << endl;  //²âÊÔÓï¶Î
+		it++;
+	}
+	return rtn;
+}
+
 
 double DateTable::InfoNum(unordered_map<string, ItemCount>::iterator& it, int sum)
 {
@@ -82,6 +100,7 @@ void DateTable::desicisonTreeTrain()
 	//cout<<"´ËÊ±ÐÐ×ÜÊý:"<< sumCount << endl;
 	if (sumCount == 0) {delete(finalCount); return; }
 	double infoF = InfoNum(*finalCount, sumCount);
+	//cout << "infoF:" << infoF << endl;
 	delete(finalCount);
 	unordered_map<string, double> H;
 	unordered_map<string,vector<pair<string,string>>> pure;
@@ -117,23 +136,30 @@ void DateTable::desicisonTreeTrain()
 			}
 			else {
 				vector<double> continueValue; 
+				unordered_set <string>* repeat = new unordered_set<string>();
 				for (int j = 0; j < trainSet.size(); j++) {
-					continueValue.push_back(atof(trainSet[j][i].c_str()));
+					if (linevisit[j]) {
+						if (!repeat->count(trainSet[j][i])) {
+							continueValue.push_back(atof(trainSet[j][i].c_str()));
+							repeat->insert(trainSet[j][i]);
+						}
+					}
 				}
+				delete(repeat);
 				sort(continueValue.begin(), continueValue.end());
 				for (int j = 0; j < continueValue.size()-1; j++) {
 					continueValue[j] = (continueValue[j] + continueValue[j + 1]) / 2;
 				}
 				continueValue.pop_back();
-				vector<ItemCount[2]> ict;
-				double maxH = 0;
+				ItemCount ictemp[2];
+				pair<double,double> maxH(0,0);
 				double nowDevide = 0;
 				for each (double n in continueValue)
 				{
 					ItemCount ic[2];
 					for (int j = 0; j < trainSet.size(); j++) {
 						if (linevisit[j]) {
-							char b = atof(trainSet[j][i].c_str()) > n;
+							int b = atof(trainSet[j][i].c_str()) > n;
 							ic[b].sum++;
 							if (ic[b].count.count(trainSet[j][finalNum])) {
 								ic[b].count[trainSet[j][finalNum]]++;
@@ -143,8 +169,8 @@ void DateTable::desicisonTreeTrain()
 							}
 						}
 					}
-					ic[0].info = InfoNum(ic[0].count, ic[0].sum, pure, itemLable[i].name, "<="+to_string(n));
-					ic[1].info = InfoNum(ic[0].count, ic[0].sum, pure, itemLable[i].name, ">"+to_string(n));
+					ic[0].info = InfoNum(ic[0].count, ic[0].sum,itemLable[i].name, "<="+to_string(n));
+					ic[1].info = InfoNum(ic[1].count, ic[1].sum,itemLable[i].name, ">"+to_string(n));
 					double Htemp = 0;
 					double infonum = 0.0;
 					for each (ItemCount t in ic)
@@ -152,23 +178,45 @@ void DateTable::desicisonTreeTrain()
 						Htemp += ((double)t.sum / (double)sumCount) *t.info;
 						infonum += InfoNum(t, sumCount);
 					}
-					Htemp = (infoF - H[itemLable[i].name]) / infonum;
-					if (Htemp >= maxH) {
-						maxH = Htemp;
+					//cout <<n<<" infonum:"<< infonum << endl;
+					Htemp = infoF - Htemp;
+					//cout << n << " Htemp:" << Htemp << endl;
+					if (Htemp > maxH.first) {
+						maxH.first = Htemp;
+						maxH.second = Htemp/infonum;
 						nowDevide = n;
+						ictemp[0] = ic[0];
+						ictemp[1] = ic[1];
 					}
 				}
-				continueVlitem[itemLable[i].name] = nowDevide;
-				H[itemLable[i].name] = maxH;
+				continueVlitem[itemLable[i].name] = to_string(nowDevide);
+				H[itemLable[i].name] = maxH.second;
+				unordered_map<string, double>::iterator it = ictemp[0].count.begin();
+				while (it != ictemp[0].count.end()) {
+					if ((char)it->second) {
+						pair<string,string> temp("<=" + continueVlitem[itemLable[i].name], it->first);
+						pure[itemLable[i].name].push_back(temp);
+					}
+					it++;
+				}
+				it = ictemp[1].count.begin();
+				while (it != ictemp[1].count.end()) {
+					if ((char)it->second) {
+						pair<string, string> temp(">" + continueVlitem[itemLable[i].name], it->first);
+						pure[itemLable[i].name].push_back(temp);
+					}
+					it++;
+				}
+				//cout <<"nowdivide:" << nowDevide << endl;
 			}
 			pair<string, double>  temp(itemLable[i].name,H[itemLable[i].name]);
 			max = temp.second > max.second ? temp : max;
-			cout << itemLable[i].name << " IGR:" << H[itemLable[i].name] << endl;  //²âÊÔ×Ö¶Î
+			//cout << itemLable[i].name << " IGR:" << H[itemLable[i].name] << endl;  //²âÊÔ×Ö¶Î
 		}
 	}
 
 	if (H.size() == 0) return;
-	cout << max.first<< "(×î´óÖµ):"<<max.second << endl;  //²âÊÔ×Ö¶Î
+	//cout << max.first<< "(×î´óÖµ):"<<max.second << endl;  //²âÊÔ×Ö¶Î
 	now = new DecisionTreeNode(&itemLable[itemNameTokey[max.first]]);
 	vector<bool> aitemvisit = itemvisit;
 	aitemvisit[itemNameTokey[max.first]]=false;
@@ -217,6 +265,7 @@ void DateTable::desicisonTreeTrain()
 				alinevisit[n] = alinevisit[n]&&(it->second)[n];
 			}
 			if (H.size() != 1) {
+				//cout << endl;
 				DateTable next(itemLable, trainSet, aitemvisit, alinevisit, finalNum, now->child[it->first], itemNameTokey);
 				next.desicisonTreeTrain();
 			}

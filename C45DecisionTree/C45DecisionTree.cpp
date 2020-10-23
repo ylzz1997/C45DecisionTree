@@ -18,13 +18,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		getchar();
 		return 1;
 	}
-	/*for (vector<vector<string>*>::iterator it = trainSetTemp->begin(); it != trainSetTemp->end(); it++){
-		for (vector<string>::iterator it2 = (*it)->begin(); it2 != (*it)->end(); it2++){
-			cout<<*it2<<endl;
-		}
-	}*/
 	fileUtil.readConfig(config);
-	//cout<<config["Continuous"]<<endl;
 	TrainSet* ts = new TrainSet(*trainSetTemp,config);
 	ts->start();
 	delete(ts);

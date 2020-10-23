@@ -15,6 +15,7 @@ private:
 	DecisionTreeNode*& now;
 	double InfoNum(unordered_map<string, double>& a, int sum);
 	double InfoNum(unordered_map<string, double>& a, int sum, unordered_map<string, vector<pair<string, string>>>& pure,string first,string second);
+	double InfoNum(unordered_map<string, double>& a, int sum, string first, string second);
 	double DateTable::InfoNum(unordered_map<string, ItemCount>::iterator& it, int sum);
 	double InfoNum(ItemCount& it, int sum);
 
