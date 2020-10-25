@@ -4,3 +4,7 @@
 
 /.vs
 /C45DecisionTree/Debug/C45DecisionTree.tlog
+/C45DecisionTree/Debug/
+/C45DecisionTree/C45DecisionTree.sln
+/C45DecisionTree/C45DecisionTree.vcxproj.user
+/C45DecisionTree/.vs/C45DecisionTree/v16

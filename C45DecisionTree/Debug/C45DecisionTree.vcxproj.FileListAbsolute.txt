@@ -1,2 +1,0 @@
-C:\Users\刘航宇\Source\Repos\C45DecisionTree\C45DecisionTree\Debug\C45DecisionTree.exe
-C:\Users\刘航宇\Source\Repos\C45DecisionTree\C45DecisionTree\Debug\C45DecisionTree.pdb
