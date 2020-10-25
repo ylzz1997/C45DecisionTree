@@ -31,6 +31,11 @@ TestSet::TestSet()
 
 TestSet::TestSet(vector<vector<string>> items)
 {
+	for (int i = 0; i < items[0].size(); i++) {
+		itemNameTokey[items[0][i]] = i;
+	}
+	items.erase(items.begin());
+	this->items = items;
 }
 
 TestSet::TestSet(unordered_map<string, int> itemNameTokey):itemNameTokey(itemNameTokey)
@@ -49,4 +54,14 @@ TestSet::~TestSet()
 string TestSet::patternOneTestSet(vector<string> item, DecisionTree dt)
 {
 	return patternOneTestSetLoop(item,dt.head);
+}
+
+vector<string> TestSet::patternTestSet(DecisionTree dt)
+{
+	vector<string> rtn;
+	for each (vector<string> item in items)
+	{
+		rtn.push_back(patternOneTestSet(item, dt));
+	}
+	return rtn;
 }

@@ -16,4 +16,5 @@ public:
 	TestSet(vector<vector<string>> items, unordered_map<string, int> itemNameTokey);
 	~TestSet();
 	string patternOneTestSet(vector<string> item, DecisionTree dt);
+	vector<string> patternTestSet(DecisionTree dt);
 };

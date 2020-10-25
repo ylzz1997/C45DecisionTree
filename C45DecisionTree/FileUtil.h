@@ -10,6 +10,8 @@ public:
 	FileUtil(void);
 	~FileUtil(void);
 	bool readFileToVector(vector<vector<string>>& a);
+	bool readFileToVector(vector<vector<string>>& a, string ts);
 	bool readConfig(unordered_map<string, int>& config);
+	bool readConfig(unordered_map<string, int>& config, string cf);
 };
 

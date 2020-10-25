@@ -24,9 +24,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	ts.start();
 	DecisionTree dt = ts.getDecisionTree();
  	dt.printTreeStruct();
-	TestSet tsa(ts.getItemNameTokey());
-	vector<string> test = {"Rain","Cool","80","FALSE"};
-	cout << tsa.patternOneTestSet(test, dt)<<endl;
+	vector<vector<string>> testSetTemp;
+	if (!fileUtil.readFileToVector(testSetTemp,"testset.csv")) {
+		cout << "打开文件失败！" << endl;
+		getchar();
+		return 1;
+	}
+	TestSet tsa(testSetTemp);
+	vector<string> rtn = tsa.patternTestSet(dt);
+	for each (string var in rtn)
+	{
+		cout << var << endl;
+	}
 	getchar();
 	return 0;
 }

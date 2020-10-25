@@ -15,7 +15,7 @@ void DecisionTree::printTreeStructLoop(DecisionTreeNode* now,string nowPath)
 		return;
 	}
 	else {
-		cout << "		拥有子节点:" << now->reason;
+		cout << "		拥有子节点:  " ;
 		deque<pair<string, DecisionTreeNode*>> a;
 		for each (pair<string,DecisionTreeNode*> n in now->child)
 		{
