@@ -4,6 +4,7 @@
 
 TrainSet::TrainSet(vector<vector<string>>& a,unordered_map<string, int>& b):trainSet(a), config(b)
 {
+	desicsionTree.itemLable = itemLable;
 	int length = trainSet[0].size();
 	for(int i=0;i<trainSet[0].size();i++){
 		int continuous = config["Continuous"];
@@ -43,6 +44,16 @@ void TrainSet::start(){
 
 DecisionTree TrainSet::getDecisionTree(){
 	return this->desicsionTree;
+}
+
+unordered_map<string, int> TrainSet::getItemNameTokey()
+{
+	return itemNameTokey;
+}
+
+vector<Item*> TrainSet::getItemLable()
+{
+	return itemLable;
 }
 
 TrainSet::~TrainSet(void)

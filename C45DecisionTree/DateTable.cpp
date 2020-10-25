@@ -216,6 +216,7 @@ void DateTable::desicisonTreeTrain()
 	if (H.size() == 0) return;
 	//cout << max.first<< "(×î´óÖµ):"<<max.second << endl;  //²âÊÔ×Ö¶Î
 	now = new DecisionTreeNode(itemLable[itemNameTokey[max.first]]);
+	if (itemLable[itemNameTokey[max.first]]->isContinuous) now->reason = continueVlitem[max.first];
 	vector<bool> aitemvisit = itemvisit;
 	aitemvisit[itemNameTokey[max.first]]=false;
 	for (vector<pair<string,string>>::iterator it = pure[max.first].begin(); it!= pure[max.first].end(); it++) {

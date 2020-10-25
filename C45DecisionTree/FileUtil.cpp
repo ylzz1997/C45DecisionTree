@@ -15,6 +15,7 @@ bool FileUtil::readFileToVector(vector<vector<string>>& a){
 	ifstream csvInput(TRAINSET_FILEURL);
 	if (!csvInput)
     {
+		csvInput.close();
 		return false;
     }
     string line;
@@ -30,6 +31,7 @@ bool FileUtil::readFileToVector(vector<vector<string>>& a){
 		}
 		i++;
 	}
+	csvInput.close();
 	return true;
 }
 
@@ -37,6 +39,7 @@ bool FileUtil::readConfig(unordered_map<string, int>& config){
 	ifstream iniInput(CONFIG_FILEURL);
 	if (!iniInput)
     {
+		iniInput.close();
 		return false;
     }
 	string line;
@@ -56,6 +59,7 @@ bool FileUtil::readConfig(unordered_map<string, int>& config){
 			i++;
 			//cout<<field<<endl;
 		}
+		iniInput.close();
 		config[key]=value;
 	}
 	return true;

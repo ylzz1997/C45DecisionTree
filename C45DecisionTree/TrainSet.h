@@ -20,4 +20,6 @@ public:
 	~TrainSet(void);
 	void start();
 	DecisionTree getDecisionTree();
+	unordered_map<string, int> getItemNameTokey();
+	vector<Item*> getItemLable();
 };

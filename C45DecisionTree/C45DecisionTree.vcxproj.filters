@@ -48,6 +48,9 @@
     <ClInclude Include="DecisionTree.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TestSet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +78,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DecisionTree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TestSet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

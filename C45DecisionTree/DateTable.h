@@ -5,7 +5,7 @@
 using namespace std;
 class DateTable
 {
-private:
+private: 
 	vector<Item*>& itemLable;
 	vector<vector<string>>& trainSet;
 	unordered_map<string, int>& itemNameTokey;

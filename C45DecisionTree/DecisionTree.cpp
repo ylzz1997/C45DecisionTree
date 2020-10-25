@@ -4,6 +4,7 @@ using namespace std;
 
 void DecisionTree::printTreeStructLoop(DecisionTreeNode* now,string nowPath)
 {
+	if (now == nullptr) return;
 	cout << "当前路径:" << nowPath << endl;
 	cout << "	当前结点信息:" << endl;
 	cout << "		标签名称:" <<now->item->name <<endl;
@@ -49,4 +50,11 @@ DecisionTree::DecisionTree(DecisionTreeNode* head,vector<Item*> itemLable) : ite
 
 DecisionTree::~DecisionTree(void)
 {
+
+	for each (Item* i in itemLable)
+	{
+		delete(i);
+	}
 }
+
+

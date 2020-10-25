@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "FileUtil.h"
 #include "TrainSet.h"
+#include "TestSet.h"
 using namespace std;
 void initial(void);
 FileUtil fileUtil;
@@ -23,6 +24,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	ts.start();
 	DecisionTree dt = ts.getDecisionTree();
  	dt.printTreeStruct();
+	TestSet tsa(ts.getItemNameTokey());
+	vector<string> test = {"Rain","Cool","80","FALSE"};
+	cout << tsa.patternOneTestSet(test, dt)<<endl;
 	getchar();
 	return 0;
 }
